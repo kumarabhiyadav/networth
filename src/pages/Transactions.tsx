@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronLeft, Download, ChevronDown } from 'lucide-react';
 import { Chart } from "react-google-charts";
+import { useNavigate } from 'react-router-dom';
 
 const TransactionsPage = () => {
     const pieData = [
@@ -17,7 +18,7 @@ const TransactionsPage = () => {
         is3D: true,
         pieHole: 0.4,
         legend: "none",
-        tooltip: { 
+        tooltip: {
             text: 'value',
             trigger: 'selection'
         },
@@ -40,13 +41,7 @@ const TransactionsPage = () => {
             width: '100%',
             height: '100%'
         },
-        tooltip: {
-            showColorCode: true,
-            text: 'both',
-            textStyle: {
-                fontSize: 13
-            }
-        }
+       
     };
 
     // Format the data to include both category and percentage
@@ -108,12 +103,15 @@ const TransactionsPage = () => {
         }
     ];
 
+    const navigator = useNavigate();
     return (
         <div className="max-w-md mx-auto bg-gray-50 min-h-screen">
             {/* Header */}
             <div className="bg-white p-4 flex items-center justify-between sticky top-0 z-10">
                 <div className="flex items-center space-x-4">
-                    <button className="p-2">
+                    <button className="p-2" onClick={() => {
+                        navigator(-1);
+                    }}>
                         <ChevronLeft className="w-6 h-6" />
                     </button>
                     <h1 className="text-xl font-semibold">Transactions</h1>
