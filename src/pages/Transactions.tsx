@@ -1,6 +1,5 @@
 import React from 'react';
 import { ChevronLeft, Download, ChevronDown } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { Chart } from "react-google-charts";
 
 const TransactionsPage = () => {
@@ -15,21 +14,52 @@ const TransactionsPage = () => {
 
     const options = {
         title: "",
-        is3D: true, 
-        pieHole: 0.2, 
-        legend: {
-            position: "labeled",
-            textStyle: {
-                color: "#233238",
-                fontSize: 14,
-            },
+        is3D: true,
+        pieHole: 0.4,
+        legend: "none",
+        tooltip: { 
+            text: 'value',
+            trigger: 'selection'
         },
+        pieSliceText: "percentage",
         pieSliceTextStyle: {
-            color: "#000", // Text color for labels
+            color: "#000",
             fontSize: 14,
-          },
+        },
+        slices: {
+            0: { color: "#4285F4" },  // Blue
+            1: { color: "#DB4437" },  // Red
+            2: { color: "#F4B400" },  // Yellow
+            3: { color: "#0F9D58" },  // Green
+            4: { color: "#8A2BE2" }   // Purple
+        },
+        backgroundColor: "transparent",
+        chartArea: {
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%'
+        },
+        tooltip: {
+            showColorCode: true,
+            text: 'both',
+            textStyle: {
+                fontSize: 13
+            }
+        }
     };
 
+    // Format the data to include both category and percentage
+    const formattedPieData = [
+        ["Category", "Value", { role: "tooltip", type: "string", p: { html: true } }],
+        ...pieData.slice(1).map(([category, value]) => [
+            category,
+            value,
+            `${category}\n${value} (${(value)}%)`
+        ])
+    ];
+
+    // Rest of your component remains the same...
     const transactions = [
         {
             title: 'Amazon Fresh',
@@ -117,19 +147,15 @@ const TransactionsPage = () => {
                 </div>
 
                 {/* Pie Chart */}
-                <div className="bg-white rounded-lg">
-                    <div className="h-64"
-                    color='green'
-                    >
-
+                <div className="bg-white rounded-lg p-4" style={{ width: "100%" }}>
+                    <div className="h-80">
                         <Chart
                             chartType="PieChart"
-                            data={pieData}
+                            data={formattedPieData}
                             options={options}
-                            height={"350px"}
-                        
+                            width="100%"
+                            height="100%"
                         />
-                       
                     </div>
                 </div>
 
